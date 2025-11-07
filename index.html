@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Invitación | La mera mera fiesta de Daniela</title>
+  <title>Fiesta de Daniela</title>
+  <meta name="theme-color" content="#ffd200">
+  <!-- Favicon -->
+  <link rel="icon" href="./img/logo.png" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./img/logo.png">
+  <link rel="shortcut icon" href="./img/favicon.svg" type="image/svg+xml">
+  <!-- Tipografías para un estilo infantil y amigable -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="./css/party_dany.css">
   <!-- Bootstrap 5 (para futuros botones y componentes) -->
   <link
@@ -38,6 +48,9 @@
           <span class="star s4"></span>
           <span class="star s5"></span>
           <span class="star s6"></span>
+          <span class="star s7"></span>
+          <span class="star s8"></span>
+          <span class="star s9"></span>
         </div>
       </div>
 
@@ -71,7 +84,7 @@
     <div class="bunting"></div>
     <div class="contenido text-center countdown">
       <div class="cajon-titulo">Cuenta regresiva</div>
-      <p class="lead">La fiesta empieza el 6 de diciembre de 2025 a las 2:00 PM</p>
+      <p class="lead"></p>
       <div class="cd-grid">
         <div class="cd-box">
           <div class="num" id="cd-days">00</div>
@@ -99,12 +112,12 @@
   <section class="location-card">
     <div class="bunting"></div>
     <div class="contenido text-center">
-      <div class="cajon-titulo">Ubicación de la iglesia</div>
+      <h2 class="section-title">Ubicación de la iglesia</h2>
       <div class="loc-img-wrap mt-3">
-        <img src="./img/iglesia.jpg" alt="Iglesia — ubicación de la ceremonia" loading="lazy" />
+        <img src="./img/inglesia.png" alt="Iglesia — ubicación de la ceremonia" loading="lazy" />
       </div>
       <div class="loc-actions">
-        <a class="btn btn-primary" style="--bs-btn-bg: var(--azul); --bs-btn-border-color: var(--azul);" href="https://maps.app.goo.gl/dtqTGSXk2sz7eTje9" target="_blank" rel="noopener noreferrer">Ver en Google Maps</a>
+        <a class="btn btn-warning" style="--bs-btn-bg: var(--amarillo); --bs-btn-border-color: var(--amarillo); color: var(--azul-oscuro);" href="https://maps.app.goo.gl/dtqTGSXk2sz7eTje9" target="_blank" rel="noopener noreferrer">Ver en Google Maps</a>
       </div>
     </div>
   </section>
@@ -113,7 +126,7 @@
   <section class="location-card">
     <div class="bunting"></div>
     <div class="contenido text-center">
-      <div class="cajon-titulo">Ubicación del salón</div>
+      <h2 class="section-title">Ubicación del salón</h2>
       <div class="loc-img-wrap mt-3">
         <img src="./img/salon.jpeg" alt="Salón — ubicación de la fiesta" loading="lazy" />
       </div>
@@ -123,10 +136,93 @@
     </div>
   </section>
 
+  <!-- Cajón: Galería (botón que abre modal con carrusel) -->
+  <section class="gallery-card">
+    <div class="bunting"></div>
+    <div class="contenido text-center">
+      <h2 class="section-title">Galería</h2>
+      <div class="loc-actions">
+        <button type="button" class="btn btn-primary" style="--bs-btn-bg: var(--azul); --bs-btn-border-color: var(--azul); font-weight: 800;" data-bs-toggle="modal" data-bs-target="#galeriaModal">
+          Abrir galería
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cajón: Confirmación y QR -->
+  <section class="qr-card">
+    <div class="bunting"></div>
+    <div class="contenido text-center">
+      <div class="cajon-titulo">Escriba el nombre de la Familia</div>
+      <form class="qr-form mt-3" id="qrForm">
+        <div class="input-group">
+          <input type="text" id="familiaInput" class="form-control" placeholder="Escribe el nombre de la familia" aria-label="Nombre de la familia" required />
+          <button class="btn btn-warning" style="--bs-btn-bg: var(--amarillo); --bs-btn-border-color: var(--amarillo); color: var(--azul-oscuro);" type="submit"  font-weight: 800;">Enviar</button>
+        </div>
+      </form>
+      <div class="mt-3" id="qrArea" aria-live="polite">
+        <div class="qr-wrap" id="qrWrap" hidden>
+          <img id="qrImg" alt="Código QR generado" />
+        </div>
+        <div class="qr-caption" id="qrCaption" hidden>Excelente.! se ha enviado el RQ y nombre de la familia al administrador. Esperamos tu asistencia.!</div>
+      </div>
+    </div>
+  </section>
+
 
   <!-- JS: Bootstrap (opcional, para futuros componentes) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script src ="js/cuentaRegresiva.js"></script>
+  <script src ="js/qrcode.min.js"></script>
+  <script src ="js/generador_qr.js"></script>
   <script src ="js/party_dany.js"></script>
+  <!-- Toggle de tema -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌓</button>
+
+  <!-- Modal de galería con carrusel Bootstrap -->
+  <div class="modal fade" id="galeriaModal" tabindex="-1" aria-labelledby="galeriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="galeriaModalLabel">Galería de fotos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="galeriaCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#galeriaCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#galeriaCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#galeriaCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="gal-frame">
+                  <img src="./img/inglesia.png" class="d-block w-100" alt="Foto 1 de la galería" loading="lazy">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="gal-frame">
+                  <img src="./img/logo.png" class="d-block w-100" alt="Foto 2 de la galería" loading="lazy">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="gal-frame">
+                  <img src="./img/salon.jpeg" class="d-block w-100" alt="Foto 3 de la galería" loading="lazy">
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#galeriaCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#galeriaCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Siguiente</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

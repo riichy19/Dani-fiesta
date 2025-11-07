@@ -10,42 +10,77 @@
       --azul: #0057d9; /* azul fuerte */
       --azul-oscuro: #0d2b7e; /* para textos sobre fondos cálidos */
       --fondo-claro: #f7f9ff;
+      /* Tipografías */
+      --font-heading: 'Fredoka', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+      --font-body: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+      /* Tema (valores por defecto: claro) */
+      --surface: #ffffff;
+      --text: #1d2630;
+      --text-muted: #263242;
+      --page-bg:
+        radial-gradient(75% 75% at -10% -10%, rgba(255, 210, 0, 0.24), transparent 70%),
+        radial-gradient(70% 70% at 110% 10%, rgba(255, 140, 0, 0.20), transparent 70%),
+        radial-gradient(55% 55% at 50% 120%, rgba(0, 87, 217, 0.18), transparent 60%),
+        linear-gradient(180deg, #ffffff 0%, var(--fondo-claro) 100%);
+      /* Separación vertical entre cajones */
+      --stack-gap: clamp(22px, 5.5vw, 40px);
+    }
+
+    html[data-theme="dark"] {
+      --surface: #0f172a; /* slate-900 */
+      --text: #e6eef8;
+      --text-muted: #c0c8d8;
+      --azul-oscuro: ##292121; /* letras sobre fondos cálidos en modo oscuro */
+      --page-bg:
+        radial-gradient(75% 75% at -10% -10%, rgba(255, 210, 0, 0.12), transparent 70%),
+        radial-gradient(70% 70% at 110% 10%, rgba(255, 140, 0, 0.12), transparent 70%),
+        radial-gradient(55% 55% at 50% 120%, rgba(0, 87, 217, 0.12), transparent 60%),
+        linear-gradient(180deg, #0b1020 0%, #0a0f1a 100%);
     }
 
     /* Fondo suave y festivo con "manchas" de color */
     body {
       min-height: 100vh;
       margin: 0;
-      background:
-        radial-gradient(75% 75% at -10% -10%, rgba(255, 210, 0, 0.24), transparent 70%),
-        radial-gradient(70% 70% at 110% 10%, rgba(255, 140, 0, 0.20), transparent 70%),
-        radial-gradient(55% 55% at 50% 120%, rgba(0, 87, 217, 0.18), transparent 60%),
-        linear-gradient(180deg, #ffffff 0%, var(--fondo-claro) 100%);
-      color: #1d2630;
+      background: var(--page-bg);
+      color: var(--text);
       display: grid;
       place-items: center;
       padding: 24px;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      font-family: var(--font-body);
     }
 
     .inv-card {
       width: min(960px, 100%);
-      background: #fff;
+      background: var(--surface);
       border-radius: 24px;
       box-shadow: 0 12px 28px rgba(0,0,0,0.08);
       overflow: hidden;
       position: relative;
     }
 
-    /* Banderín decorativo superior */
-    .inv-card .bunting, .padrinos-card .bunting, .countdown-card .bunting, .location-card .bunting {
+    /* Banderín decorativo superior (animación tipo barber pole hacia la derecha) */
+    .inv-card .bunting, .padrinos-card .bunting, .countdown-card .bunting, .location-card .bunting, .qr-card .bunting, .gallery-card .bunting, .modal-bunting {
+      --stripe: 18px;
+      --bunting-cycle: calc(var(--stripe) * 3);
       height: 10px;
       background: repeating-linear-gradient(
         45deg,
-        var(--amarillo) 0 18px,
-        var(--naranja) 18px 36px,
-        var(--azul) 36px 54px
+        var(--amarillo) 0 var(--stripe),
+        var(--naranja) var(--stripe) calc(var(--stripe) * 2),
+        var(--azul) calc(var(--stripe) * 2) calc(var(--stripe) * 3)
       );
+      background-size: var(--bunting-cycle) 100%;
+      background-position: 0 0;
+      animation: bunting-scroll 4s linear infinite;
+    }
+
+    @keyframes bunting-scroll {
+      to { background-position: var(--bunting-cycle) 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .inv-card .bunting, .padrinos-card .bunting, .countdown-card .bunting, .location-card .bunting, .qr-card .bunting, .gallery-card .bunting, .modal-bunting { animation: none; }
     }
 
     .contenido {
@@ -60,6 +95,7 @@
       background: linear-gradient(90deg, var(--amarillo), var(--naranja));
       color: var(--azul-oscuro);
       font-weight: 800;
+      font-family: var(--font-heading);
       letter-spacing: 0.3px;
       box-shadow: 0 6px 14px rgba(255, 140, 0, 0.25);
     }
@@ -71,6 +107,7 @@
       color: var(--azul);
       text-align: center;
       font-weight: 900;
+      font-family: var(--font-heading);
     }
 
     /* Contenedor de la foto con aro en gradiente */
@@ -97,7 +134,7 @@
     .ring .inner {
       width: 100%;
       aspect-ratio: 1;
-      background: #fff;
+      background: var(--surface);
       border-radius: 50%;
       overflow: hidden;
       display: grid;
@@ -188,7 +225,7 @@
 
     .detalles {
       margin-top: 18px;
-      color: #263242;
+      color: var(--text-muted);
       text-align: center;
     }
 
@@ -222,6 +259,9 @@
     .sparkles .s4 { top: 104%; left: 50%; --rot: -20deg; animation-delay: 1.2s; }
     .sparkles .s5 { top: 86%; left: 13%; --rot: 8deg; animation-delay: 1.6s; background: var(--naranja); }
     .sparkles .s6 { top: 16%; left: -4%; --rot: -16deg; animation-delay: 2s; background: var(--azul); }
+    .sparkles .s7 { top: 6%; left: 75%; --rot: 6deg; animation-delay: 2.4s; }
+    .sparkles .s8 { top: 50%; left: 108%; --rot: -8deg; animation-delay: 2.8s; background: var(--azul); }
+    .sparkles .s9 { top: 50%; left: -8%; --rot: 12deg; animation-delay: 3.2s; background: var(--naranja); }
 
     @keyframes twinkle {
       0%, 100% { transform: translate(-50%, -50%) scale(0.7) rotate(var(--rot, 0deg)); opacity: 0.0; }
@@ -238,13 +278,14 @@
       box-shadow: 0 12px 28px rgba(0,0,0,0.08);
       overflow: hidden;
       position: relative;
-      margin-top: 22px;
+      margin: clamp(18px, 4vw, 32px) auto;
     }
     .padrinos { margin-top: 8px; }
     .padrinos .name {
       margin: 8px 0 0 0;
       font-size: clamp(18px, 3.2vw, 24px);
       font-weight: 900;
+      font-family: var(--font-heading);
       letter-spacing: 0.3px;
       color: var(--azul); /* fallback si no hay soporte de clip */
     }
@@ -276,7 +317,7 @@
       box-shadow: 0 12px 28px rgba(0,0,0,0.08);
       overflow: hidden;
       position: relative;
-      margin: 22px auto 0 auto;
+      margin: clamp(18px, 4vw, 32px) auto;
     }
     .countdown .lead {
       margin: 10px 0 18px 0;
@@ -308,16 +349,43 @@
     .cd-box .num {
       font-size: clamp(28px, 7vw, 48px);
       font-weight: 900;
+      font-family: var(--font-heading);
       line-height: 1;
       color: var(--azul); /* fallback */
     }
     .cd-box .label {
       margin-top: 6px;
       font-weight: 800;
+      font-family: var(--font-heading);
       color: var(--naranja);
       letter-spacing: .4px;
       text-transform: uppercase;
       font-size: clamp(11px, 2vw, 12px);
+    }
+
+    /* Títulos de sección que NO parezcan botones */
+    .section-title {
+      margin: 0;
+      font-size: clamp(22px, 3.8vw, 30px);
+      font-weight: 900;
+      font-family: var(--font-heading);
+      color: var(--azul);
+      display: inline-block;
+      padding: 2px 4px 6px 4px;
+      border-radius: 0;
+      background: transparent;
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      display: block;
+      height: 6px;
+      width: 62%;
+      min-width: 120px;
+      margin: 8px auto 0 auto;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--amarillo), var(--naranja), var(--azul));
+      opacity: .95;
     }
     /* Brillo suave para el título de la cuenta regresiva */
     .countdown-card .cajon-titulo {
@@ -364,18 +432,18 @@
     @property --loc-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
     .location-card {
       width: min(960px, 100%);
-      background: #fff;
+      background: var(--surface);
       border-radius: 24px;
       box-shadow: 0 12px 28px rgba(0,0,0,0.08);
       overflow: hidden;
       position: relative;
-      margin: 22px auto 0 auto;
+      margin: clamp(18px, 4vw, 32px) auto;
     }
     .loc-img-wrap {
       border-radius: 18px;
       border: 4px solid transparent;
       background:
-        linear-gradient(#fff, #fff) padding-box,
+        linear-gradient(var(--surface), var(--surface)) padding-box,
         conic-gradient(from var(--loc-angle), var(--amarillo), var(--naranja), var(--azul), var(--amarillo)) border-box;
       animation: spin-loc 24s linear infinite;
       box-shadow: 0 8px 16px rgba(0,0,0,0.06);
@@ -390,3 +458,183 @@
     .loc-actions .btn { font-weight: 800; }
     @keyframes spin-loc { to { --loc-angle: 360deg; } }
     @media (prefers-reduced-motion: reduce) { .loc-img-wrap { animation: none; } }
+
+    /* ----------------------------- */
+    /*  Cajón: Galería               */
+    /* ----------------------------- */
+    @property --gal-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    .gallery-card {
+      width: min(720px, 100%);
+      background: var(--surface);
+      border-radius: 24px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      margin: clamp(18px, 4vw, 32px) auto;
+    }
+    .gal-frame {
+      border-radius: 18px;
+      border: 4px solid transparent;
+      background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        conic-gradient(from var(--gal-angle), var(--amarillo), var(--naranja), var(--azul), var(--amarillo)) border-box;
+      animation: spin-gal 28s linear infinite;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    }
+    .gal-frame img { display: block; width: 100%; height: auto; border-radius: 14px; }
+    @keyframes spin-gal { to { --gal-angle: 360deg; } }
+    @media (prefers-reduced-motion: reduce) { .gal-frame { animation: none; } }
+
+    /* Transición suave al cambiar de tema */
+    @media (prefers-reduced-motion: no-preference) {
+      html.theme-anim, html.theme-anim * {
+        transition: color .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease, background .35s ease, background-image .35s ease, filter .35s ease;
+      }
+    }
+
+    /* Scroll reveal (simple: oculto → aparece suave) */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .85s cubic-bezier(.22,.9,.24,1), transform .85s cubic-bezier(.22,.9,.24,1);
+      position: relative;
+    }
+    .reveal.is-visible { opacity: 1; transform: none; }
+    /* Overlay degradado que se desvanece para suavizar la percepción */
+    .reveal::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(180deg,
+        rgba(255,210,0,0.18),
+        rgba(255,140,0,0.12) 40%,
+        rgba(0,87,217,0.10) 100%
+      );
+      opacity: .9;
+      transition: opacity .85s cubic-bezier(.22,.9,.24,1);
+    }
+    .reveal.is-visible::after { opacity: 0; }
+    /* En modo oscuro, usa un overlay más sutil */
+    html[data-theme="dark"] .reveal::after {
+      background: linear-gradient(180deg,
+        rgba(255,210,0,0.10),
+        rgba(255,140,0,0.08) 40%,
+        rgba(0,87,217,0.08) 100%
+      );
+      opacity: .75;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal.is-visible { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+
+    /* Animaciones de scroll deshabilitadas */
+
+    /* Toggle de tema (flotante) */
+    .theme-toggle {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 10;
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      border: 0;
+      background: linear-gradient(90deg, var(--amarillo), var(--naranja));
+      color: var(--azul-oscuro);
+      font-weight: 900;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+    .theme-toggle:hover { filter: brightness(1.05); }
+
+    /* ----------------------------- */
+    /*  Modal de Galería (tema)      */
+    /* ----------------------------- */
+    #galeriaModal .modal-content {
+      border-radius: 24px;
+      border: 4px solid transparent;
+      background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        conic-gradient(from var(--gal-angle), var(--amarillo), var(--naranja), var(--azul), var(--amarillo)) border-box;
+      animation: spin-gal 28s linear infinite;
+      box-shadow: 0 18px 36px rgba(0,0,0,0.2);
+    }
+    #galeriaModal .modal-header {
+      border-bottom: none;
+      background: transparent;
+      padding-bottom: 8px;
+    }
+    #galeriaModal .modal-title {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      color: var(--azul);
+    }
+    #galeriaModal .btn-close { opacity: .85; }
+    #galeriaModal .btn-close:hover { opacity: 1; }
+    #galeriaModal .modal-body { background: var(--surface); }
+
+    /* Espaciado consistente entre cajones */
+    main.inv-card,
+    section.padrinos-card,
+    section.countdown-card,
+    section.location-card,
+    section.gallery-card,
+    section.qr-card {
+      margin: var(--stack-gap) auto;
+    }
+    /* Más espacio tras el primer cajón para apreciar animaciones */
+    main.inv-card { margin-top: var(--stack-gap); margin-bottom: calc(var(--stack-gap) * 2.5); }
+    /* Indicadores del carrusel al estilo de la paleta */
+    #galeriaModal .carousel-indicators [data-bs-target] {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(90deg, var(--amarillo), var(--naranja), var(--azul));
+      opacity: .35;
+      border: none;
+    }
+    #galeriaModal .carousel-indicators .active { opacity: 1; }
+    /* Controles del carrusel con halo suave */
+    #galeriaModal .carousel-control-prev, #galeriaModal .carousel-control-next { filter: drop-shadow(0 6px 12px rgba(0,87,217,.25)); }
+    /* Backdrop con leve tinte festivo */
+    .modal-backdrop.show {
+      opacity: .55;
+      background:
+        radial-gradient(120% 120% at 0% 0%, rgba(255,210,0,0.15), transparent 60%),
+        radial-gradient(120% 120% at 100% 0%, rgba(255,140,0,0.15), transparent 60%),
+        radial-gradient(120% 120% at 50% 100%, rgba(0,87,217,0.12), transparent 60%);
+    }
+
+    /* ----------------------------- */
+    /*  Cajón: Formulario + QR       */
+    /* ----------------------------- */
+    @property --qr-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    .qr-card {
+      width: min(960px, 100%);
+      background: var(--surface);
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      margin: clamp(18px, 4vw, 32px) auto;
+    }
+    .qr-form { max-width: 560px; margin: 0 auto; }
+    .qr-form .form-control { font-weight: 700; }
+    .qr-wrap {
+      display: inline-block;
+      border-radius: 18px;
+      border: 4px solid transparent;
+      background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        conic-gradient(from var(--qr-angle), var(--amarillo), var(--naranja), var(--azul), var(--amarillo)) border-box;
+      animation: spin-qr 20s linear infinite;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    }
+    .qr-wrap img { display: block; width: 240px; height: 240px; object-fit: contain; border-radius: 12px; }
+    .qr-caption { margin-top: 8px; font-weight: 800; color: var(--azul); }
+    @keyframes spin-qr { to { --qr-angle: 360deg; } }
+    @media (prefers-reduced-motion: reduce) { .qr-wrap { animation: none; } }
