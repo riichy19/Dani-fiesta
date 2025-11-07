@@ -18,6 +18,15 @@
     return String(name || '').replace(/[^a-zA-Z0-9_.-]/g, '_');
   }
 
+  function normalizeFamily(name) {
+    return String(name || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
   function getCorrectLevel() {
     if (window.QRErrorCorrectLevel) return window.QRErrorCorrectLevel;
     if (window.QRCode && QRCode.CorrectLevel) return QRCode.CorrectLevel;
@@ -94,11 +103,49 @@
     const img = document.getElementById(imgId);
     const wrap = document.getElementById(wrapId);
     const caption = document.getElementById(captionId);
+    const USED_PREFIX = 'qr:used:';
+    function showSuccessAlert(family) {
+      const nombre = (family || '').trim();
+      const title = nombre ? `¡QR generado para ${nombre}!` : '¡QR generado!';
+      const html = '<p style="margin:0 0 6px">Este código es <b>único y personal</b>.</p>' +
+        '<p style="margin:0 0 6px">El <b>personal autorizado</b> validará esta información al ingreso.</p>' +
+        '<p style="margin:0">Por favor, <b>guárdalo</b> y muéstralo a tu llegada.</p>';
+      if (window.Swal) {
+        Swal.fire({
+          icon: 'success',
+          title,
+          html,
+          confirmButtonText: 'Entendido',
+          confirmButtonColor: '#0057d9'
+        });
+      } else {
+        alert((nombre ? (nombre + ', ') : '') + 'tu QR es único y será validado por personal autorizado. Guárdalo y muéstralo a tu llegada.');
+      }
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const family = (input?.value || '').trim();
       if (!img) return;
+
+       // Evita generar otro QR si ya existe uno para el mismo nombre
+      try {
+        const key = USED_PREFIX + normalizeFamily(family);
+        if (localStorage.getItem(key)) {
+          if (window.Swal) {
+            Swal.fire({
+              icon: 'info',
+              title: 'QR ya generado',
+              text: 'Ya se generó un QR para este nombre. No es posible obtener otro.',
+              confirmButtonText: 'Entendido',
+              confirmButtonColor: '#0057d9'
+            });
+          } else {
+            alert('Ya se generó un QR para este nombre. No es posible obtener otro.');
+          }
+          return;
+        }
+      } catch (_) {}
 
       // Modo simulación: mostrar una imagen aleatoria existente
       if (Array.isArray(simulationImages) && simulationImages.length > 0) {
@@ -112,6 +159,8 @@
             : `Esperamos tu asistencia.  favor de hacerle captura al qr.`;
           caption.hidden = false;
         }
+        try { localStorage.setItem(USED_PREFIX + normalizeFamily(family), '1'); } catch {}
+        showSuccessAlert(family);
         return; // no generamos ni guardamos
       }
 
@@ -126,6 +175,7 @@
           caption.textContent = `${family}, esperamos tu asistencia.  favor de hacerle captura al qr.`;
           caption.hidden = false;
         }
+        showSuccessAlert(family);
       }
 
       if (autoSave && dataUrl) {
@@ -136,7 +186,10 @@
         }
       }
 
-      try { localStorage.setItem('qr:lastPayload', JSON.stringify(payload)); } catch {}
+      try {
+        localStorage.setItem('qr:lastPayload', JSON.stringify(payload));
+        localStorage.setItem(USED_PREFIX + normalizeFamily(family), '1');
+      } catch {}
     });
   }
 

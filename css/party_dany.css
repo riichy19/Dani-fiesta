@@ -48,6 +48,7 @@
       place-items: center;
       padding: 24px;
       font-family: var(--font-body);
+      position: relative;
     }
 
     .inv-card {
@@ -60,7 +61,7 @@
     }
 
     /* Banderín decorativo superior (animación tipo barber pole hacia la derecha) */
-    .inv-card .bunting, .padrinos-card .bunting, .countdown-card .bunting, .location-card .bunting, .qr-card .bunting, .gallery-card .bunting, .modal-bunting {
+    .inv-card .bunting, .padrinos-card .bunting, .countdown-card .bunting, .location-card .bunting, .qr-card .bunting, .gallery-card .bunting, .dedicatoria-card .bunting, .modal-bunting {
       --stripe: 18px;
       --bunting-cycle: calc(var(--stripe) * 3);
       height: 10px;
@@ -550,6 +551,97 @@
       cursor: pointer;
     }
     .theme-toggle:hover { filter: brightness(1.05); }
+    .audio-toggle { right: 72px; }
+
+    /* Confetti canvas */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 20000; /* por encima del modal Bootstrap */
+      pointer-events: none;
+      display: block;
+    }
+
+    /* Fondo con patrón temático sutil (confetti/dots) */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(circle at 10% 15%, rgba(255,210,0,0.07) 2px, transparent 3px),
+        radial-gradient(circle at 35% 70%, rgba(0,87,217,0.06) 2px, transparent 3px),
+        radial-gradient(circle at 85% 25%, rgba(255,140,0,0.06) 2px, transparent 3px);
+      background-size: 140px 140px, 180px 180px, 220px 220px;
+      background-repeat: repeat;
+    }
+    html[data-theme="dark"] body::after {
+      background-image:
+        radial-gradient(circle at 10% 15%, rgba(255,210,0,0.05) 2px, transparent 3px),
+        radial-gradient(circle at 35% 70%, rgba(155,181,255,0.05) 2px, transparent 3px),
+        radial-gradient(circle at 85% 25%, rgba(255,140,0,0.05) 2px, transparent 3px);
+    }
+
+    /* Microinteracciones en botones */
+    .btn {
+      transition: transform .2s ease, box-shadow .25s ease, filter .2s ease;
+      will-change: transform, box-shadow;
+      border-radius: 12px;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0) scale(.98); }
+    .btn-primary:hover { filter: brightness(1.06) saturate(1.05); box-shadow: 0 8px 18px rgba(0,87,217,.25); }
+    .btn-warning:hover { filter: brightness(1.02) saturate(1.05); box-shadow: 0 8px 18px rgba(255,140,0,.25); }
+    .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0,87,217,.28) !important; }
+
+    /* Estrellitas decorativas sutiles dentro de los cajones */
+    .inv-card, .padrinos-card, .countdown-card, .location-card, .gallery-card, .qr-card, .dedicatoria-card { position: relative; }
+    .inv-card::before,
+    .padrinos-card::before,
+    .countdown-card::before,
+    .location-card::before,
+    .gallery-card::before,
+    .qr-card::before,
+    .dedicatoria-card::before {
+      content: "";
+      position: absolute;
+      top: 14px; left: 12px; right: 12px; bottom: 12px; /* deja libre el bunting superior */
+      pointer-events: none;
+      z-index: 0;
+      opacity: .22;
+      background-repeat: no-repeat;
+      background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon fill='%23FFD200' points='12,2 15,9 22,9 16,13 18,21 12,16 6,21 8,13 2,9 9,9'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon fill='%23FF8C00' points='12,2 15,9 22,9 16,13 18,21 12,16 6,21 8,13 2,9 9,9'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon fill='%230057D9' points='12,2 15,9 22,9 16,13 18,21 12,16 6,21 8,13 2,9 9,9'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon fill='%23FFD200' points='12,2 15,9 22,9 16,13 18,21 12,16 6,21 8,13 2,9 9,9'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon fill='%23FF8C00' points='12,2 15,9 22,9 16,13 18,21 12,16 6,21 8,13 2,9 9,9'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon fill='%230057D9' points='12,2 15,9 22,9 16,13 18,21 12,16 6,21 8,13 2,9 9,9'/></svg>");
+      background-position:
+        12% 22%,
+        86% 18%,
+        18% 76%,
+        80% 74%,
+        52% 40%,
+        35% 86%;
+      background-size:
+        12px 12px,
+        14px 14px,
+        10px 10px,
+        12px 12px,
+        16px 16px,
+        14px 14px;
+    }
+    html[data-theme="dark"] .inv-card::before,
+    html[data-theme="dark"] .padrinos-card::before,
+    html[data-theme="dark"] .countdown-card::before,
+    html[data-theme="dark"] .location-card::before,
+    html[data-theme="dark"] .gallery-card::before,
+    html[data-theme="dark"] .qr-card::before,
+    html[data-theme="dark"] .dedicatoria-card::before {
+      opacity: .18;
+    }
 
     /* ----------------------------- */
     /*  Modal de Galería (tema)      */
@@ -583,7 +675,8 @@
     section.countdown-card,
     section.location-card,
     section.gallery-card,
-    section.qr-card {
+    section.qr-card,
+    section.dedicatoria-card {
       margin: var(--stack-gap) auto;
     }
     /* Más espacio tras el primer cajón para apreciar animaciones */
@@ -638,3 +731,23 @@
     .qr-caption { margin-top: 8px; font-weight: 800; color: var(--azul); }
     @keyframes spin-qr { to { --qr-angle: 360deg; } }
     @media (prefers-reduced-motion: reduce) { .qr-wrap { animation: none; } }
+
+    /* ----------------------------- */
+    /*  Cajón: Dedicatoria           */
+    /* ----------------------------- */
+    .dedicatoria-card{
+      width: min(720px, 100%);
+      background: var(--surface);
+      border-radius: 24px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+    }
+    .dedicatoria-card .dedica{
+      margin: 10px auto 6px;
+      max-width: 48ch;
+      font-size: clamp(16px, 3.4vw, 20px);
+      line-height: 1.55;
+      color: var(--text);
+      font-weight: 700;
+    }

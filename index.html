@@ -15,6 +15,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="./css/party_dany.css">
+  <!-- SweetAlert2 (alertas bonitas) -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <!-- Bootstrap 5 (para futuros botones y componentes) -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -108,6 +110,19 @@
   </section>
 
 
+  <!-- Cajón: Dedicatoria poética -->
+  <section class="dedicatoria-card reveal">
+    <div class="bunting"></div>
+    <div class="contenido text-center">
+      <h2 class="section-title">Con cariño</h2>
+      <p class="dedica">
+        Daniela, hoy la luna baila y las estrellas aplauden por ti. Tu próximo primito en nacer, te desean una fiesta llena de risas, magia y abrazos infinitos.
+      </p>
+      <img src="./img/pimo.jpeg" class="d-block w-100"/>
+    </div>
+  </section>
+
+
   <!-- Ubicación: Iglesia -->
   <section class="location-card">
     <div class="bunting"></div>
@@ -168,16 +183,33 @@
       </div>
     </div>
   </section>
+  <!-- Cajón: Dedicatoria poética -->
+  <section class="dedicatoria-card reveal">
+    <div class="bunting"></div>
+    <div class="contenido text-center">
+      <h2 class="section-title">Con cariño</h2>
+      <p class="dedica">
+        No te piedas esta grandiosa fiesta de Daniela
+      </p>
+      <img src="./img/chinelo.jpeg" class="d-block w-100"/>
+    </div>
+  </section>
 
 
   <!-- JS: Bootstrap (opcional, para futuros componentes) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src ="js/cuentaRegresiva.js"></script>
   <script src ="js/qrcode.min.js"></script>
   <script src ="js/generador_qr.js"></script>
   <script src ="js/party_dany.js"></script>
   <!-- Toggle de tema -->
   <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌓</button>
+  <!-- Confetti canvas -->
+  <canvas id="confettiCanvas" width="0" height="0" aria-hidden="true"></canvas>
+  <!-- Audio de fondo (coloca tu archivo en ./audio/tema.mp3) -->
+  <audio id="bg-audio" src="./audio/tema.mp3" preload="auto" loop></audio>
+  <button id="audioToggle" class="theme-toggle audio-toggle" aria-label="Activar música" title="Activar música" style="display:none;">🎵</button>
 
   <!-- Modal de galería con carrusel Bootstrap -->
   <div class="modal fade" id="galeriaModal" tabindex="-1" aria-labelledby="galeriaModalLabel" aria-hidden="true">
@@ -193,21 +225,60 @@
               <button type="button" data-bs-target="#galeriaCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
               <button type="button" data-bs-target="#galeriaCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
               <button type="button" data-bs-target="#galeriaCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              <button type="button" data-bs-target="#galeriaCarousel" data-bs-slide-to="3" aria-label="Slide 4 (video)"></button>
             </div>
             <div class="carousel-inner">
               <div class="carousel-item active">
                 <div class="gal-frame">
-                  <img src="./img/inglesia.png" class="d-block w-100" alt="Foto 1 de la galería" loading="lazy">
+                  <img src="./img/danielabanando.jpeg" class="d-block w-100" alt="Foto 1 de la galería" loading="lazy">
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="gal-frame">
-                  <img src="./img/logo.png" class="d-block w-100" alt="Foto 2 de la galería" loading="lazy">
+                  <img src="./img/danielaAuto.jpeg" class="d-block w-100" alt="Foto 2 de la galería" loading="lazy">
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="gal-frame">
-                  <img src="./img/salon.jpeg" class="d-block w-100" alt="Foto 3 de la galería" loading="lazy">
+                  <img src="./img/danielaAurrera.jpeg" class="d-block w-100" alt="Foto 5 de la galería" loading="lazy">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="gal-frame">
+                  <img src="./img/danielamensita.jpeg" class="d-block w-100" alt="Foto 3 de la galería" loading="lazy">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="gal-frame">
+                  <img src="./img/danielamorelos.jpeg" class="d-block w-100" alt="Foto 4 de la galería" loading="lazy">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="gal-frame">
+                  <img src="./img/danielamariposa.jpeg" class="d-block w-100" alt="Foto 6 de la galería" loading="lazy">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="gal-frame">
+                  <img src="./img/danielabelibeto.jpeg" class="d-block w-100" alt="Foto 7 de la galería" loading="lazy">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="gal-frame">
+                  <img src="./img/lengui.jpeg" class="d-block w-100" alt="Foto 8 de la galería" loading="lazy">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="gal-frame">
+                  <img src="./img/danielaArenacdmx.jpeg" class="d-block w-100" alt="Foto 9 de la galería" loading="lazy">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="gal-frame">
+                  <video class="d-block w-100" controls playsinline preload="metadata" poster="./img/dani.mp4">
+                    <source src="./img/dani.mp4" type="video/mp4" />
+                    Tu navegador no soporta video HTML5.
+                  </video>
                 </div>
               </div>
             </div>
