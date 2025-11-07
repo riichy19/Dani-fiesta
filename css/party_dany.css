@@ -1,0 +1,392 @@
+
+    /* Propiedades personalizadas para animar ángulos con conic-gradient */
+    @property --ring-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    @property --grad-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    @property --text-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    :root {
+      /* Paleta principal */
+      --amarillo: #ffd200;
+      --naranja: #ff8c00;
+      --azul: #0057d9; /* azul fuerte */
+      --azul-oscuro: #0d2b7e; /* para textos sobre fondos cálidos */
+      --fondo-claro: #f7f9ff;
+    }
+
+    /* Fondo suave y festivo con "manchas" de color */
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(75% 75% at -10% -10%, rgba(255, 210, 0, 0.24), transparent 70%),
+        radial-gradient(70% 70% at 110% 10%, rgba(255, 140, 0, 0.20), transparent 70%),
+        radial-gradient(55% 55% at 50% 120%, rgba(0, 87, 217, 0.18), transparent 60%),
+        linear-gradient(180deg, #ffffff 0%, var(--fondo-claro) 100%);
+      color: #1d2630;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    .inv-card {
+      width: min(960px, 100%);
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Banderín decorativo superior */
+    .inv-card .bunting, .padrinos-card .bunting, .countdown-card .bunting, .location-card .bunting {
+      height: 10px;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--amarillo) 0 18px,
+        var(--naranja) 18px 36px,
+        var(--azul) 36px 54px
+      );
+    }
+
+    .contenido {
+      padding: clamp(20px, 4vw, 40px);
+    }
+
+    /* Cajón título */
+    .cajon-titulo {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--amarillo), var(--naranja));
+      color: var(--azul-oscuro);
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      box-shadow: 0 6px 14px rgba(255, 140, 0, 0.25);
+    }
+
+    .titulo-principal {
+      margin: 16px 0 0 0;
+      font-size: clamp(28px, 4.8vw, 48px);
+      line-height: 1.1;
+      color: var(--azul);
+      text-align: center;
+      font-weight: 900;
+    }
+
+    /* Contenedor de la foto con aro en gradiente */
+    .foto-wrap {
+      margin: 28px auto 8px auto;
+      width: clamp(180px, 38vw, 260px);
+      position: relative;
+    }
+
+    .ring {
+      --ring-t: 10px; /* grosor del aro */
+      position: relative;
+      padding: var(--ring-t);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      /* Usamos conic-gradient con ángulo animado para evitar aliasing */
+      background: conic-gradient(from var(--ring-angle), var(--amarillo), var(--naranja), var(--azul), var(--amarillo));
+      animation: ring-glow 6s ease-in-out infinite, spin-ring 14s linear infinite;
+    }
+
+    /* Eliminado ::before con máscara para evitar pixelado: el aro ahora es el fondo */
+
+    .ring .inner {
+      width: 100%;
+      aspect-ratio: 1;
+      background: #fff;
+      border-radius: 50%;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      position: relative;
+      isolation: isolate; /* el blend solo afecta dentro del círculo */
+    }
+
+    .ring .inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* Degradado animado sobre la imagen */
+    .ring .inner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      /* Degradado animado sobre la imagen con ángulo variable (sin rotar el layer) */
+      background: conic-gradient(from var(--grad-angle), var(--amarillo), var(--naranja), var(--azul), var(--amarillo));
+      mix-blend-mode: color;
+      opacity: 0.45;
+      animation: spin-grad 12s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes spin-grad { to { --grad-angle: 360deg; } }
+    @keyframes spin-ring { to { --ring-angle: 360deg; } }
+
+    @keyframes ring-glow {
+      0%, 100% { box-shadow: 0 0 0 rgba(0,0,0,0); }
+      50% {
+        box-shadow:
+          0 0 24px 6px rgba(255, 140, 0, 0.25),
+          0 0 36px 12px rgba(0, 87, 217, 0.18),
+          0 0 18px 2px rgba(255, 210, 0, 0.30);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ring .inner::after { animation: none; }
+      .ring { animation: none; }
+    }
+
+    /* Badge de edad (5 años) */
+    .edad-badge {
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      transform: translate(35%, -35%);
+      background: var(--azul);
+      color: #fff;
+      width: clamp(42px, 6vw, 58px);
+      height: clamp(42px, 6vw, 58px);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      box-shadow: 0 8px 18px rgba(0, 87, 217, 0.35);
+      border: 3px solid #fff;
+      z-index: 3;
+    }
+
+    /* Placeholder visible si no hay imagen */
+    #foto-placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 18px;
+      color: var(--azul-oscuro);
+      background:
+        radial-gradient(120% 120% at 0% 0%, rgba(255,210,0,0.18), transparent 60%),
+        radial-gradient(120% 120% at 100% 0%, rgba(255,140,0,0.18), transparent 60%),
+        radial-gradient(120% 120% at 50% 120%, rgba(0,87,217,0.12), transparent 60%);
+      font-weight: 700;
+      z-index: 2; /* por encima del gradiente animado */
+    }
+
+    /* Si no hay imagen, ocultamos el overlay para legibilidad */
+    .ring .inner.no-img::after { display: none; }
+
+    .detalles {
+      margin-top: 18px;
+      color: #263242;
+      text-align: center;
+    }
+
+    .detalles .resaltado {
+      color: var(--naranja);
+      font-weight: 800;
+    }
+
+    /* Espacio para futura botonera Bootstrap */
+    .botonera {
+      margin-top: 22px;
+      text-align: center;
+    }
+
+    /* Estrellitas y brillo alrededor */
+    .sparkles { position: absolute; inset: -8%; pointer-events: none; z-index: 4; }
+    .sparkles .star {
+      position: absolute;
+      width: clamp(10px, 2.6vw, 16px);
+      aspect-ratio: 1;
+      background: var(--amarillo);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      filter: drop-shadow(0 0 6px rgba(255, 210, 0, 0.7)) drop-shadow(0 0 10px rgba(0, 87, 217, 0.35));
+      opacity: 0.85;
+      animation: twinkle 2.8s ease-in-out infinite;
+    }
+
+    .sparkles .s1 { top: -6%; left: 50%; --rot: 10deg; animation-delay: 0s; }
+    .sparkles .s2 { top: 16%; left: 104%; --rot: -12deg; animation-delay: .4s; background: var(--naranja); }
+    .sparkles .s3 { top: 86%; left: 87%; --rot: 18deg; animation-delay: .8s; background: var(--azul); }
+    .sparkles .s4 { top: 104%; left: 50%; --rot: -20deg; animation-delay: 1.2s; }
+    .sparkles .s5 { top: 86%; left: 13%; --rot: 8deg; animation-delay: 1.6s; background: var(--naranja); }
+    .sparkles .s6 { top: 16%; left: -4%; --rot: -16deg; animation-delay: 2s; background: var(--azul); }
+
+    @keyframes twinkle {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.7) rotate(var(--rot, 0deg)); opacity: 0.0; }
+      25% { opacity: 1; }
+      50% { transform: translate(-50%, -50%) scale(1) rotate(calc(var(--rot, 0deg) + 10deg)); opacity: .95; }
+      75% { opacity: .9; }
+    }
+
+    /* Sección padrinos */
+    .padrinos-card {
+      width: min(960px, 100%);
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      margin-top: 22px;
+    }
+    .padrinos { margin-top: 8px; }
+    .padrinos .name {
+      margin: 8px 0 0 0;
+      font-size: clamp(18px, 3.2vw, 24px);
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      color: var(--azul); /* fallback si no hay soporte de clip */
+    }
+    /* Texto con degradado animado manteniendo el mismo fondo */
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      .padrinos .name {
+        /* De izquierda a derecha, ciclo continuo */
+        background: linear-gradient(90deg, var(--naranja), var(--amarillo), var(--azul), var(--naranja));
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: slide-text 8s linear infinite;
+      }
+    }
+    @keyframes slide-text { to { background-position: 200% 0%; } }
+    @media (prefers-reduced-motion: reduce) {
+      .padrinos .name { animation: none; }
+    }
+
+    /* ----------------------------- */
+    /*  Cajón: Cuenta regresiva      */
+    /* ----------------------------- */
+    @property --cd-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    .countdown-card {
+      width: min(960px, 100%);
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      margin: 22px auto 0 auto;
+    }
+    .countdown .lead {
+      margin: 10px 0 18px 0;
+      color: #334155;
+    }
+    .cd-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(10px, 2.4vw, 16px);
+      align-items: stretch;
+      justify-items: stretch;
+    }
+    @media (max-width: 520px) {
+      .cd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    .cd-box {
+      --border-r: 16px;
+      position: relative;
+      border-radius: var(--border-r);
+      padding: 14px 12px;
+      text-align: center;
+      border: 3px solid transparent;
+      background:
+        linear-gradient(#fff, #fff) padding-box,
+        conic-gradient(from var(--cd-angle), var(--amarillo), var(--naranja), var(--azul), var(--amarillo)) border-box;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+      animation: spin-cd 18s linear infinite;
+    }
+    .cd-box .num {
+      font-size: clamp(28px, 7vw, 48px);
+      font-weight: 900;
+      line-height: 1;
+      color: var(--azul); /* fallback */
+    }
+    .cd-box .label {
+      margin-top: 6px;
+      font-weight: 800;
+      color: var(--naranja);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      font-size: clamp(11px, 2vw, 12px);
+    }
+    /* Brillo suave para el título de la cuenta regresiva */
+    .countdown-card .cajon-titulo {
+      animation: title-glow 6s ease-in-out infinite;
+    }
+    /* Animación de color horizontal en los números */
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      .cd-box .num {
+        background: linear-gradient(90deg, var(--naranja), var(--amarillo), var(--azul), var(--naranja));
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: slide-text 6s linear infinite;
+      }
+    }
+    @keyframes title-glow {
+      0%, 100% {
+        box-shadow:
+          0 6px 14px rgba(255, 140, 0, 0.25),
+          0 0 0 0 rgba(255, 140, 0, 0),
+          0 0 0 0 rgba(0, 87, 217, 0),
+          0 0 0 0 rgba(255, 210, 0, 0);
+      }
+      50% {
+        box-shadow:
+          0 6px 14px rgba(255, 140, 0, 0.25),
+          0 0 24px 6px rgba(255, 140, 0, 0.25),
+          0 0 36px 12px rgba(0, 87, 217, 0.18),
+          0 0 18px 2px rgba(255, 210, 0, 0.30);
+      }
+    }
+    @keyframes spin-cd { to { --cd-angle: 360deg; } }
+    @media (prefers-reduced-motion: reduce) {
+      .cd-box { animation: none; }
+      .cd-box .num { animation: none; }
+      .countdown-card .cajon-titulo { animation: none; }
+    }
+    .cd-finished { margin-top: 10px; font-weight: 800; color: var(--azul); }
+
+    /* ----------------------------- */
+    /*  Cajones: Ubicaciones         */
+    /* ----------------------------- */
+    @property --loc-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    .location-card {
+      width: min(960px, 100%);
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      margin: 22px auto 0 auto;
+    }
+    .loc-img-wrap {
+      border-radius: 18px;
+      border: 4px solid transparent;
+      background:
+        linear-gradient(#fff, #fff) padding-box,
+        conic-gradient(from var(--loc-angle), var(--amarillo), var(--naranja), var(--azul), var(--amarillo)) border-box;
+      animation: spin-loc 24s linear infinite;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    }
+    .loc-img-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
+    }
+    .loc-actions { margin-top: 14px; }
+    .loc-actions .btn { font-weight: 800; }
+    @keyframes spin-loc { to { --loc-angle: 360deg; } }
+    @media (prefers-reduced-motion: reduce) { .loc-img-wrap { animation: none; } }

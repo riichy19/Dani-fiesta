@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invitación | La mera mera fiesta de Daniela</title>
+  <link rel="stylesheet" href="./css/party_dany.css">
+  <!-- Bootstrap 5 (para futuros botones y componentes) -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    crossorigin="anonymous"
+  />
+</head>
+<body>
+  <main class="inv-card">
+    <div class="bunting"></div>
+    <div class="contenido text-center">
+      <div class="cajon-titulo">La mera mera fiesta de Daniela</div>
+      <h1 class="titulo-principal">¡Estás invitad@!</h1>
+
+      <div class="foto-wrap">
+        <div class="ring">
+          <div class="inner" id="foto-inner">
+            <!-- Reemplaza la ruta por tu imagen real en ./img -->
+            <img id="foto-daniela" src="./img/logo.png" alt="Foto de Daniela" />
+            <div id="foto-placeholder">Agrega aquí la foto de Daniela</div>
+
+            <div class="edad-badge" aria-label="Cumple 5 años">5</div>
+          </div>
+        </div>
+        <!-- Estrellitas decorativas alrededor -->
+        <div class="sparkles" aria-hidden="true">
+          <span class="star s1"></span>
+          <span class="star s2"></span>
+          <span class="star s3"></span>
+          <span class="star s4"></span>
+          <span class="star s5"></span>
+          <span class="star s6"></span>
+        </div>
+      </div>
+
+      <p class="detalles">  
+        Mi fiesta de presentación <span class="resaltado">5 años</span> llenos de risas, abrazos y momentos inolvidables,
+        <span class="resaltado"> verte crecer</span>, <span class="resaltado"> es el viaje</span><span class="resaltado"> más hermoso</span>.
+      </p>
+
+      <!--
+        Botonera lista para cuando la necesites (Bootstrap)
+        <div class="botonera">
+          <a href="#" class="btn btn-primary me-2" style="--bs-btn-bg: var(--azul); --bs-btn-border-color: var(--azul);">Confirmar asistencia</a>
+          <a href="#" class="btn btn-warning" style="--bs-btn-bg: var(--amarillo); --bs-btn-border-color: var(--amarillo); color: var(--azul-oscuro); font-weight: 700;">Ver ubicación</a>
+        </div>
+      -->
+    </div>
+  </main>
+
+  <!-- Cajón independiente con los padrinos -->
+  <section class="padrinos-card">
+    <div class="bunting"></div>
+    <div class="contenido text-center padrinos">
+      <div class="cajon-titulo">Nombres de los padrinos</div>
+      <p class="name">Luis Alberto Martinez Avila</p>
+      <p class="name">Rafael de la  Cruz Vasquez</p>
+    </div>
+  </section>
+
+  <!-- Cajón independiente con cuenta regresiva -->
+  <section class="countdown-card">
+    <div class="bunting"></div>
+    <div class="contenido text-center countdown">
+      <div class="cajon-titulo">Cuenta regresiva</div>
+      <p class="lead">La fiesta empieza el 6 de diciembre de 2025 a las 2:00 PM</p>
+      <div class="cd-grid">
+        <div class="cd-box">
+          <div class="num" id="cd-days">00</div>
+          <div class="label">Días</div>
+        </div>
+        <div class="cd-box">
+          <div class="num" id="cd-hours">00</div>
+          <div class="label">Horas</div>
+        </div>
+        <div class="cd-box">
+          <div class="num" id="cd-mins">00</div>
+          <div class="label">Minutos</div>
+        </div>
+        <div class="cd-box">
+          <div class="num" id="cd-secs">00</div>
+          <div class="label">Segundos</div>
+        </div>
+      </div>
+      <p class="cd-finished" id="cd-finished" role="status"></p>
+    </div>
+  </section>
+
+
+  <!-- Ubicación: Iglesia -->
+  <section class="location-card">
+    <div class="bunting"></div>
+    <div class="contenido text-center">
+      <div class="cajon-titulo">Ubicación de la iglesia</div>
+      <div class="loc-img-wrap mt-3">
+        <img src="./img/iglesia.jpg" alt="Iglesia — ubicación de la ceremonia" loading="lazy" />
+      </div>
+      <div class="loc-actions">
+        <a class="btn btn-primary" style="--bs-btn-bg: var(--azul); --bs-btn-border-color: var(--azul);" href="https://maps.app.goo.gl/dtqTGSXk2sz7eTje9" target="_blank" rel="noopener noreferrer">Ver en Google Maps</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ubicación: Salón -->
+  <section class="location-card">
+    <div class="bunting"></div>
+    <div class="contenido text-center">
+      <div class="cajon-titulo">Ubicación del salón</div>
+      <div class="loc-img-wrap mt-3">
+        <img src="./img/salon.jpeg" alt="Salón — ubicación de la fiesta" loading="lazy" />
+      </div>
+      <div class="loc-actions">
+        <a class="btn btn-warning" style="--bs-btn-bg: var(--amarillo); --bs-btn-border-color: var(--amarillo); color: var(--azul-oscuro);" href="https://maps.app.goo.gl/J6soxbChqfnahuPg6" target="_blank" rel="noopener noreferrer">Ver en Google Maps</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- JS: Bootstrap (opcional, para futuros componentes) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src ="js/cuentaRegresiva.js"></script>
+  <script src ="js/party_dany.js"></script>
+</body>
+</html>
