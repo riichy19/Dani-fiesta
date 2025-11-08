@@ -135,6 +135,7 @@
 
 // Audio: intenta reproducir a los 3s; si falla por políticas, muestra botón para activar
 (function () {
+  if (window.__audioSetupDone) return;
   const audio = document.getElementById('bg-audio');
   const btn = document.getElementById('audioToggle');
   if (!audio || !btn) return;
